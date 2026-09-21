@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>India AI Policy & Governance Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF6EC;
+    --paper-raised: #F3EDDD;
+    --ink: #1E2A44;
+    --ink-soft: #52607A;
+    --ink-faint: #8891A3;
+    --accent: #B5691F;
+    --accent-soft: #E7C9A0;
+    --line: #DCD4BC;
+    --line-strong: #C7BC9C;
+    --central: #1E2A44;
+    --state: #4A6B5F;
+    --focus: #1E2A44;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181F;
+      --paper-raised: #1B212B;
+      --ink: #ECE7D8;
+      --ink-soft: #A9AFBD;
+      --ink-faint: #6C7280;
+      --accent: #E0A05B;
+      --accent-soft: #4A3B26;
+      --line: #2B3138;
+      --line-strong: #3A4149;
+      --central: #ECE7D8;
+      --state: #7FA495;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181F;
+    --paper-raised: #1B212B;
+    --ink: #ECE7D8;
+    --ink-soft: #A9AFBD;
+    --ink-faint: #6C7280;
+    --accent: #E0A05B;
+    --accent-soft: #4A3B26;
+    --line: #2B3138;
+    --line-strong: #3A4149;
+    --central: #ECE7D8;
+    --state: #7FA495;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Masthead */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    color: var(--ink-faint);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.12;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .dek {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  .stats {
+    display: flex;
+    gap: 0;
+    margin-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+  .stat {
+    flex: 1;
+    padding: 14px 18px 0 0;
+    border-right: 1px solid var(--line);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  /* Controls */
+  .controls {
+    margin-bottom: 6px;
+  }
+  .search-row {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .search-row input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line-strong);
+    font-family: 'Newsreader', serif;
+    font-size: 19px;
+    color: var(--ink);
+    padding: 8px 2px 10px 0;
+    outline: none;
+  }
+  .search-row input::placeholder { color: var(--ink-faint); font-style: italic; }
+  .search-row input:focus { border-bottom-color: var(--ink); }
+
+  .filter-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-bottom: 30px;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-group-label {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-right: 4px;
+  }
+  .pill {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    padding: 5px 12px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .pill:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .pill.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .result-line {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    margin-bottom: 6px;
+  }
+
+  /* Entries */
+  .entry {
+    display: grid;
+    grid-template-columns: 76px 1fr auto;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .entry-index {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    padding-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .entry-index .date {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 11.5px;
+    margin-top: 3px;
+  }
+  .entry-main h3 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+  .entry-main p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 58ch;
+  }
+  .entry-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    padding-top: 3px;
+    white-space: nowrap;
+  }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    padding: 3px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    color: var(--ink-soft);
+  }
+  .tag.level-central { color: var(--central); border-color: var(--central); }
+  .tag.level-state { color: var(--state); border-color: var(--state); }
+
+  .empty {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--ink-faint);
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .entry { grid-template-columns: 1fr; gap: 8px; }
+    .entry-index { display: flex; gap: 8px; align-items: baseline; }
+    .entry-index .date { margin-top: 0; }
+    .entry-tags { flex-direction: row; align-items: flex-start; }
+    .stats { flex-wrap: wrap; }
+    .stat { flex: 1 1 45%; margin-bottom: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="masthead-top">
+      <span>Independent tracker — not an official government source</span>
+      <span id="today"></span>
+    </div>
+    <h1>India AI Policy &amp; Governance Tracker</h1>
+    <p class="dek">A running index of central and state bodies, missions, and rules shaping artificial intelligence in India.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num" id="stat-total">0</span>
+        <div class="stat-label">Entries tracked</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-central">0</span>
+        <div class="stat-label">Central</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-state">0</span>
+        <div class="stat-label">State</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-types">0</span>
+        <div class="stat-label">Policy types</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="search-row">
+      <input type="text" id="search" placeholder="Search by name or description…" autocomplete="off">
+    </div>
+    <div class="filter-groups">
+      <div class="filter-group" id="level-group">
+        <span class="filter-group-label">Level</span>
+      </div>
+      <div class="filter-group" id="type-group">
+        <span class="filter-group-label">Type</span>
+      </div>
+    </div>
+    <div class="result-line" id="result-line"></div>
+  </div>
+
+  <div id="entries"></div>
+
+  <footer>
+    <span>Compiled from public government and news sources, Sep 2026.</span>
+    <span id="visible-count"></span>
+  </footer>
+
+</div>
+
+<script>
+  const DATA = [
+    {name:"IndiaAI Mission", date:"March 2024", desc:"Flagship ₹10,372 crore, 5-year mission under MeitY covering compute, data, models, skilling, startups, and safe AI.", level:"Central", type:"Funding"},
+    {name:"IndiaAI Compute Capacity pillar", date:"2024, ongoing", desc:"Common compute infrastructure via public-private partnership, past 38,000 GPUs by early 2026.", level:"Central", type:"Infrastructure"},
+    {name:"AIKosh National Dataset Platform", date:"2024, ongoing", desc:"Government dataset and model repository, over 5,500 datasets and 251 models across 20 sectors as of Dec 2025.", level:"Central", type:"Data"},
+    {name:"IndiaAI FutureSkills pillar", date:"2024, ongoing", desc:"Skilling pillar covering Data & AI Labs in ITIs/polytechnics and research fellowships.", level:"Central", type:"Skilling"},
+    {name:"IndiaAI Application Development Initiative", date:"2024, ongoing", desc:"Funds AI application pilots in priority sectors like health, agriculture, governance.", level:"Central", type:"Application"},
+    {name:"IndiaAI Startup Financing pillar", date:"2024, ongoing", desc:"Financing arm for AI startups, works alongside MeitY Startup Hub.", level:"Central", type:"Funding"},
+    {name:"IndiaAI Innovation Centre (Foundation Models)", date:"2024, ongoing", desc:"Supports development of indigenous large language / multimodal models; 12 teams shortlisted by Feb 2026.", level:"Central", type:"Research"},
+    {name:"NITI Aayog National Strategy for AI (#AIforAll)", date:"June 2018", desc:"Original sectoral AI strategy defining priority sectors for public AI investment.", level:"Central", type:"Strategy"},
+    {name:"NITI Aayog Responsible AI for All", date:"2021", desc:"Policy paper setting principles for responsible AI adoption.", level:"Central", type:"Governance"},
+    {name:"MeitY India AI Governance Guidelines", date:"November 2025", desc:"Voluntary, sector-agnostic governance framework built on 7 principles (\"sutras\"); no standalone AI law.", level:"Central", type:"Governance"},
+    {name:"AI Governance Guidelines full launch", date:"February 2026", desc:"Formal launch of the governance guidelines ahead of the India-AI Impact Summit.", level:"Central", type:"Governance"},
+    {name:"Digital Personal Data Protection Act, 2023", date:"2023", desc:"Cross-sector data protection law that applies to AI systems processing personal data.", level:"Central", type:"Law"},
+    {name:"IT Intermediary Rules Amendment (Deepfake / SGI rules)", date:"February 2026", desc:"Mandates labelling and provenance metadata for AI-generated \"synthetically generated information.\"", level:"Central", type:"Law"},
+    {name:"IndiaAI Safety Institute", date:"2025", desc:"Institutional body for AI safety monitoring and capacity building under the governance guidelines.", level:"Central", type:"Safety"},
+    {name:"AI (Ethics and Accountability) Bill", date:"Proposed, 2025", desc:"Draft bill signalling future direction of binding AI regulation.", level:"Central", type:"Law"},
+    {name:"India AI Impact Summit 2026", date:"19-20 Feb 2026", desc:"Global summit hosted in New Delhi with 20+ heads of state on AI governance and impact.", level:"Central", type:"Diplomacy"},
+    {name:"IndiaAI Innovation Challenge 2026", date:"2026", desc:"Competition inviting deployable AI solutions for public sector problems with AYUSH and MSME ministries.", level:"Central", type:"Application"},
+    {name:"Telangana AI Ecosystem (Fund-of-Funds)", date:"Ongoing", desc:"₹1,000 crore fund-of-funds for early-stage and deep-tech AI startups.", level:"State", type:"Funding"},
+    {name:"Telangana-Meta e-Governance partnership", date:"2024, ongoing", desc:"Generative AI models deployed for public service delivery.", level:"State", type:"Governance"},
+    {name:"Karnataka Shiksha Co-pilot", date:"2024", desc:"Generative AI assistant for teacher lesson planning and training.", level:"State", type:"Education"},
+    {name:"Karnataka GCC Policy", date:"2024", desc:"Policy targeting 500 new Global Capability Centres and 3.5 lakh jobs by 2029.", level:"State", type:"Industry"},
+    {name:"Tamil Nadu AI Mission (TNAIM)", date:"2024", desc:"Five-year, ₹13.93 crore mission for AI-driven governance under \"social good by design.\"", level:"State", type:"Governance"},
+    {name:"Andhra Pradesh AI City (Amaravati)", date:"2024, ongoing", desc:"Plan to develop Amaravati as an AI-centric city with Google partnership across agriculture, health, skilling.", level:"State", type:"Infrastructure"},
+    {name:"Maharashtra AI Policy 2026", date:"April 2026", desc:"State cabinet-approved AI policy with ₹10,000 crore planned investment.", level:"State", type:"Funding"},
+    {name:"Kerala Generative AI Hub ambition", date:"July 2024", desc:"State ambition to become a global generative AI hub, announced by industries minister.", level:"State", type:"Strategy"},
+    {name:"Odisha AI policy", date:"2025-26", desc:"Cited as having the clearest formal state AI policy among western and northern states.", level:"State", type:"Governance"}
+  ];
+
+  const state = { search: "", level: "All", type: "All" };
+
+  const levels = ["All", ...Array.from(new Set(DATA.map(d => d.level)))];
+  const types = ["All", ...Array.from(new Set(DATA.map(d => d.type))).sort()];
+
+  function buildPills(groupId, options, key) {
+    const group = document.getElementById(groupId);
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'pill' + (opt === state[key] ? ' active' : '');
+      btn.textContent = opt;
+      btn.setAttribute('data-value', opt);
+      btn.addEventListener('click', () => {
+        state[key] = opt;
+        group.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.getAttribute('data-value') === opt));
+        render();
+      });
+      group.appendChild(btn);
+    });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render() {
+    const q = state.search.trim().toLowerCase();
+    const filtered = DATA.filter(d => {
+      if (state.level !== "All" && d.level !== state.level) return false;
+      if (state.type !== "All" && d.type !== state.type) return false;
+      if (q && !(d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q))) return false;
+      return true;
+    });
+
+    const container = document.getElementById('entries');
+    container.innerHTML = '';
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty">No entries match. Try clearing a filter or the search.</div>';
+    } else {
+      filtered.forEach((d, i) => {
+        const row = document.createElement('div');
+        row.className = 'entry';
+        row.innerHTML = `
+          <div class="entry-index">${String(i + 1).padStart(2, '0')}<span class="date">${escapeHtml(d.date)}</span></div>
+          <div class="entry-main">
+            <h3>${escapeHtml(d.name)}</h3>
+            <p>${escapeHtml(d.desc)}</p>
+          </div>
+          <div class="entry-tags">
+            <span class="tag level-${d.level.toLowerCase()}">${d.level}</span>
+            <span class="tag">${escapeHtml(d.type)}</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    document.getElementById('result-line').textContent =
+      `Showing ${filtered.length} of ${DATA.length} entries`;
+    document.getElementById('visible-count').textContent =
+      `${filtered.length} shown`;
+  }
+
+  document.getElementById('search').addEventListener('input', e => {
+    state.search = e.target.value;
+    render();
+  });
+
+  buildPills('level-group', levels, 'level');
+  buildPills('type-group', types, 'type');
+
+  document.getElementById('stat-total').textContent = DATA.length;
+  document.getElementById('stat-central').textContent = DATA.filter(d => d.level === 'Central').length;
+  document.getElementById('stat-state').textContent = DATA.filter(d => d.level === 'State').length;
+  document.getElementById('stat-types').textContent = new Set(DATA.map(d => d.type)).size;
+
+  document.getElementById('today').textContent = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  render();
+</script>
+</body>
+</html>
